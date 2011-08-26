@@ -29,6 +29,10 @@ import org.restlet.Context;
  */
 public interface IApplicationProvider
 {
+	String SERVLET_CONFIG_ATTRIBUTE = "javax.servlet.ServletConfig";
+	String SERVLET_CONTEXT_ATTRIBUTE = "org.restlet.ext.servlet.ServletContext";
+	String COMPONENT_ATTRIBUTE = "org.restlet.ext.servlet.ServerServlet.component.org.eclipselabs.restlet.servlet.ApplicationServlet";
+
 	String getAlias();
 
 	/**

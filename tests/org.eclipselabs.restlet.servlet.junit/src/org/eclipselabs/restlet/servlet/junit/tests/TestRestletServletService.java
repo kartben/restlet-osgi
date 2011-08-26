@@ -16,16 +16,22 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.matchers.JUnitMatchers.containsString;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.eclipselabs.restlet.ApplicationProvider;
+import org.eclipselabs.restlet.DirectoryProvider;
 import org.eclipselabs.restlet.FilterProvider;
 import org.eclipselabs.restlet.ResourceProvider;
 import org.eclipselabs.restlet.RouterProvider;
 import org.eclipselabs.restlet.servlet.RestletServletService;
 import org.eclipselabs.restlet.servlet.junit.support.Activator;
 import org.eclipselabs.restlet.servlet.junit.support.TestApplicationProvider;
+import org.eclipselabs.restlet.servlet.junit.support.TestDirectoryProvider;
 import org.eclipselabs.restlet.servlet.junit.support.TestFilter;
 import org.eclipselabs.restlet.servlet.junit.support.TestFilterProvider;
 import org.eclipselabs.restlet.servlet.junit.support.TestResourceMultiPathProvider;
@@ -33,7 +39,9 @@ import org.eclipselabs.restlet.servlet.junit.support.TestResourceProvider;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.osgi.service.http.HttpService;
 import org.osgi.service.log.LogEntry;
 import org.osgi.service.log.LogListener;
@@ -49,6 +57,9 @@ import org.restlet.routing.Filter;
  */
 public class TestRestletServletService
 {
+	@Rule
+	public TemporaryFolder tempFolder = new TemporaryFolder();
+
 	@BeforeClass
 	public static void globalSetup() throws InterruptedException
 	{
@@ -287,6 +298,29 @@ public class TestRestletServletService
 		String result = client.get(String.class);
 		assertThat(result, is(nullValue()));
 		assertTrue(((TestFilter) filterProvider.getFilter()).isBeforeHandleCalled());
+	}
+
+	@Test
+	public void testDirectory() throws IOException
+	{
+		File file = tempFolder.newFile("junit");
+		FileWriter out = new FileWriter(file);
+		out.write("junit");
+		out.close();
+
+		ApplicationProvider applicationProvider = new TestApplicationProvider();
+		RouterProvider routerProvider = new RouterProvider();
+		DirectoryProvider directoryProvider = new TestDirectoryProvider("file://" + file.getParentFile().getAbsolutePath());
+
+		applicationProvider.bindRouterProvider(routerProvider);
+		routerProvider.bindDirectoryProvider(directoryProvider);
+
+		restletServletService.bindHttpService(httpService);
+		restletServletService.bindApplicationProvider(applicationProvider);
+
+		ClientResource client = createResource("/junit/");
+		String result = client.get(String.class);
+		assertThat(result, containsString(">junit<"));
 	}
 
 	private ClientResource createResource(String path)

@@ -11,7 +11,13 @@
 
 package org.eclipselabs.restlet.servlet.junit.support;
 
+import javax.servlet.ServletContext;
+
 import org.eclipselabs.restlet.ApplicationProvider;
+import org.restlet.Application;
+import org.restlet.Component;
+import org.restlet.Context;
+import org.restlet.data.Protocol;
 
 /**
  * @author bhunt
@@ -23,5 +29,14 @@ public class TestApplicationProvider extends ApplicationProvider
 	public String getAlias()
 	{
 		return "/";
+	}
+
+	@Override
+	public Application createApplication(Context context)
+	{
+		ServletContext servletContext = (ServletContext) context.getAttributes().get(SERVLET_CONTEXT_ATTRIBUTE);
+		Component component = (Component) servletContext.getAttribute(COMPONENT_ATTRIBUTE);
+		component.getClients().add(Protocol.FILE);
+		return super.createApplication(context);
 	}
 }

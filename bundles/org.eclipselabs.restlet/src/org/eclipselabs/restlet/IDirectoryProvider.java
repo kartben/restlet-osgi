@@ -1,28 +1,26 @@
 /*******************************************************************************
- * Copyright (c) 2010 Bryan Hunt.
+ * Copyright (c) 2011 Bryan Hunt.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Bryan Hunt - initial API and implementation
+ *   Bryan Hunt  - initial API and implementation
  *******************************************************************************/
 
 package org.eclipselabs.restlet;
 
-import org.restlet.routing.Filter;
-
 /**
- * This is an OSGi service interface for registering Restlet filters with a router or a resource.
+ * This is an OSGi service interface for registering Restlet directories with a router.
  * Users are expected to register an instance as an OSGi service. It is recommended that
- * you use the {@link org.eclipselabs.restlet.FilterProvider} implementation. You may
+ * you use the {@link org.eclipselabs.restlet.DirectoryProvider} implementation. You may
  * extend it if necessary, or as a last resort, provide your own implementation of
- * {@link IFilterProvider}.
+ * {@link IDirectoryProvider}.
  * 
  * @author bhunt
  */
-public interface IFilterProvider extends IRestletProvider
+public interface IDirectoryProvider extends IRestletProvider
 {
-	Filter getFilter();
+	String getPath();
 }

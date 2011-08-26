@@ -39,6 +39,14 @@ public class RouterProvider extends RestletProvider implements IRouterProvider
 			router.attachDefault(routerProvider.getInboundRoot(router.getContext()));
 	}
 
+	public void bindDirectoryProvider(IDirectoryProvider directoryProvider)
+	{
+		directoryProviders.add(directoryProvider);
+
+		if (router != null)
+			attachDirectory(directoryProvider);
+	}
+
 	public void bindResourceProvider(IResourceProvider resourceProvider)
 	{
 		resourceProviders.add(resourceProvider);
@@ -56,6 +64,9 @@ public class RouterProvider extends RestletProvider implements IRouterProvider
 
 			for (IResourceProvider resourceProvider : resourceProviders)
 				attachResource(resourceProvider);
+
+			for (IDirectoryProvider directoryProvider : directoryProviders)
+				attachDirectory(directoryProvider);
 
 			if (defaultRestletProvider != null)
 				router.attachDefault(defaultRestletProvider.getInboundRoot(context));
@@ -87,6 +98,15 @@ public class RouterProvider extends RestletProvider implements IRouterProvider
 		}
 	}
 
+	public void unbindDirectoryProvider(IDirectoryProvider directoryProvider)
+	{
+		if (directoryProviders.remove(directoryProvider))
+		{
+			if (router != null)
+				router.detach(directoryProvider.getInboundRoot(router.getContext()));
+		}
+	}
+
 	public void unbindResourceProvider(IResourceProvider resourceProvider)
 	{
 		if (resourceProviders.remove(resourceProvider))
@@ -107,6 +127,11 @@ public class RouterProvider extends RestletProvider implements IRouterProvider
 		return router;
 	}
 
+	private void attachDirectory(IDirectoryProvider directoryProvider)
+	{
+		router.attach(directoryProvider.getPath(), directoryProvider.getInboundRoot(router.getContext()));
+	}
+
 	private void attachResource(IResourceProvider resourceProvider)
 	{
 		for (String path : resourceProvider.getPaths())
@@ -116,4 +141,5 @@ public class RouterProvider extends RestletProvider implements IRouterProvider
 	private Router router;
 	private IRestletProvider defaultRestletProvider;
 	private HashSet<IResourceProvider> resourceProviders = new HashSet<IResourceProvider>();
+	private HashSet<IDirectoryProvider> directoryProviders = new HashSet<IDirectoryProvider>();
 }
