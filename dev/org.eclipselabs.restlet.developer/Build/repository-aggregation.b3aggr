@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aggregator:Aggregation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aggregator="http://www.eclipse.org/b3/2011/aggregator/1.1.0" label="restlet-osgi" buildRoot="D:/wrk/writing/restlet-osgi-pages/third-party">
+  <validationSets label="main">
+    <contributions label="indigo">
+      <repositories location="http://download.eclipse.org/releases/indigo" mirrorArtifacts="false">
+        <mapRules xsi:type="aggregator:ExclusionRule" name="epp.package.linuxtools"/>
+        <mapRules xsi:type="aggregator:ExclusionRule" name="epp.package.cpp"/>
+        <mapRules xsi:type="aggregator:ExclusionRule" name="epp.package.scout"/>
+      </repositories>
+    </contributions>
+    <contributions enabled="false" label="restlet">
+      <repositories location="http://maven.restlet.org/org/restlet/jee/org.restlet" nature="maven2" mirrorArtifacts="false"/>
+    </contributions>
+    <contributions label="bryan">
+      <repositories location="http://quickiemart.springfieldusa.net/Targets/Restlet"/>
+      <repositories enabled="false" location="http://quickiemart.springfieldusa.net/Targets/MongoEMF"/>
+      <repositories enabled="false" location="http://quickiemart.springfieldusa.net/Targets/MongoDB"/>
+      <repositories location="http://quickiemart.springfieldusa.net/Targets/FreeMarker"/>
+    </contributions>
+  </validationSets>
+  <configurations/>
+  <configurations operatingSystem="macosx" windowSystem="cocoa"/>
+  <configurations operatingSystem="linux" windowSystem="gtk"/>
+</aggregator:Aggregation>
