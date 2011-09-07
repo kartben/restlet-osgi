@@ -6,11 +6,11 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>../../../plugins/org.eclipselabs.restlet</module>
-    <module>../../../plugins/org.eclipselabs.restlet.mongo</module>
-    <module>../../../plugins/org.eclipselabs.restlet.servlet</module>
-    <module>../../../plugins/org.eclipselabs.restlet.di.eclipse</module>
-    <module>../../../plugins/org.eclipselabs.restlet.wadl.di.eclipse</module>
+    <module>../../../bundles/org.eclipselabs.restlet</module>
+    <module>../../../bundles/org.eclipselabs.restlet.mongo</module>
+    <module>../../../bundles/org.eclipselabs.restlet.servlet</module>
+    <module>../../../bundles/org.eclipselabs.restlet.di.eclipse</module>
+    <module>../../../bundles/org.eclipselabs.restlet.wadl.di.eclipse</module>
     
     
     <module>../../../tests/org.eclipselabs.restlet.developer.junit</module>
